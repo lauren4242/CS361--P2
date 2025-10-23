@@ -6,10 +6,8 @@
 
 ## Overview
 
-Concisely explain what the program does. If this exceeds a couple of
-sentences, you're going too far. Generally you should be pulling this
-right from the project specification. Please don't just cut and
-paste, but paraphrase what is stated in the project specification.
+This project models an instance of a nondeterministic
+finite automaton (NFA) and its behavior.
 
 ## Reflection
 
