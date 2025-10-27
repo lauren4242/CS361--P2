@@ -1,61 +1,105 @@
-import java.util.Set;
+package fa.nfa;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 import fa.State;
 
 public class NFA implements NFAInterface{
 
+    // Private Fields
+    private Set<Character> alphabet;
+    private Set<NFAState> states;
+    private Map<String, NFAState> stateMap;
+    private NFAState startState;
+    private Set<NFAState> finalStates;
+
+    /**
+     * Constructs a new and empty NFA. It contains no states, no alphabet,
+     * and no transitions.
+     */
+    public NFA() {
+        alphabet = new LinkedHashSet<>();
+        states = new LinkedHashSet<>();
+        stateMap = new HashMap<>();
+        finalStates = new LinkedHashSet<>();
+    }
+
     @Override
     public boolean addState(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addState'");
+        if (stateMap.containsKey(name)) {
+            return false;
+        }
+        NFAState state = new NFAState(name);
+        states.add(state);
+        stateMap.put(name, state);
+        return true;
     }
 
     @Override
     public boolean setFinal(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setFinal'");
+        NFAState state = stateMap.get(name);
+        if (state == null) {
+            return false;
+        }
+        finalStates.add(state);
+        return true;
     }
 
     @Override
     public boolean setStart(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setStart'");
+        NFAState state = stateMap.get(name);
+        if (state == null) {
+            return false;
+        }
+        startState = state;
+        return true;
     }
 
     @Override
     public void addSigma(char symbol) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addSigma'");
+        if (!alphabet.contains(symbol)) {
+            alphabet.add(symbol);
+        }
     }
 
     @Override
     public boolean accepts(String s) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'accepts'");
+        if (startState == null) {
+            return false;
+        }
+        NFAState current = startState;
+        for (char c : s.toCharArray()) {
+            current = current.getNextState(c);
+            if (current == null) {
+                return false;
+            }
+        }
+        return finalStates.contains(current);
     }
 
     @Override
     public Set<Character> getSigma() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getSigma'");
+        return Collections.unmodifiableSet(alphabet);
     }
 
     @Override
     public State getState(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getState'");
+        return stateMap.get(name);
     }
 
     @Override
     public boolean isFinal(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isFinal'");
+        NFAState s = stateMap.get(name);
+        return s != null && finalStates.contains(s);
     }
 
     @Override
     public boolean isStart(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isStart'");
+        NFAState s = stateMap.get(name);
+        return s != null && s.equals(startState);
     }
 
     @Override
@@ -86,4 +130,7 @@ public class NFA implements NFAInterface{
     public boolean isDFA() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'isDFA'");
-    }}
+    }
+
+    
+}
