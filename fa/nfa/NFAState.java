@@ -1,34 +1,59 @@
 package fa.nfa;
-import java.util.HashMap;
-import java.util.Map;
 
 import fa.State;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class NFAState extends State {
 
+    private final Map<Character, Set<NFAState>> transitions;
+
     /**
-     * Maps input symbols to their corresponding destination states
+     * Default constructor
      */
-    private Map<Character, NFAState> transitions;
-    
+    public NFAState() {
+        super();
+        transitions = new HashMap<>();
+    }
+
     /**
-     * Constructs a new NFA state with the given name.
-     * 
-     * @param name The name/label of the state
+     * Constructor with name parameter
+     *
+     * @param name the name of the state
      */
     public NFAState(String name) {
         super(name);
         transitions = new HashMap<>();
     }
-    
+
     /**
-     * Gets the next state based on the input symbol.
+     * Adds a transition from this state to a target state on a given symbol
      *
-     * @param symbol The input symbol to follow
-     * @return The destination state for the given symbol, or null if no
-     * transition exists
+     * @param onSymb the symbol for this transition
+     * @param toState the target state
      */
-    public NFAState getNextState(char symbol) {
-        return transitions.get(symbol);
+    public void addTransition(char onSymb, NFAState toState) {
+        transitions.computeIfAbsent(onSymb, k -> new HashSet<>()).add(toState);
+    }
+
+    /**
+     * Gets all states that can be reached from this state on the given symbol
+     *
+     * @param onSymb the symbol to transition on
+     * @return set of states reachable on the given symbol, empty set if none
+     */
+    public Set<NFAState> getToStates(char onSymb) {
+        return transitions.getOrDefault(onSymb, new HashSet<>());
+    }
+
+    /**
+     * Gets all transition symbols from this state
+     *
+     * @return set of all symbols that have transitions from this state
+     */
+    public Set<Character> getTransitionSymbols() {
+        return transitions.keySet();
     }
 }
