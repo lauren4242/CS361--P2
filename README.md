@@ -11,29 +11,23 @@ finite automaton (NFA) and its behavior.
 
 ## Reflection
 
-Write a brief (2-3 paragraph) reflection describing your experience with this 
-project. Answer the following questions (but feel free to add other insights): 
-- What worked well and what was a struggle?
-- What concepts still aren't quite clear?
-- What techniques did you use to make your code easy to debug and modify?
-- What would you change about your design process?
-- If you could go back in time, what would you tell yourself about doing this project?
+This project was fairly easy to complete, given that there was a lot of methods that crossed over from our DFA Project. There was a bit of a struggle in understanding where exactly NFAState.java would be placed in the packages, because it needed to read State.java still. With an import of fa.State, we were able to fix that issue. Aside from the methods that carried over, the newer method that was the most difficult was probably eClosure, given that it was the most integral piece to the NFA functionality.
+
+To make our code easy to debug and modify, we used frequent commits to our GitHub repository. We did this so in the case the code broke, we could easily pin-point where that occurred, and be able to restore an older version if needed. We feel fairly solid on the concepts of NFA, and there is nothing that we necessarily would change about our design process, other than maybe an earlier start on the project. That's also something that we would tell ourselves about the project ahead of time.
+
 
 ## Compiling and Using
 
-This section should tell the user how to compile your code.  It is
-also appropriate to instruct the user how to use your code. Does your
-program require user input? If so, what does your user need to know
-about it to use it as quickly as possible?
+To compile test.nfa.NFATest on onyx from the top directory of these files:
+
+    [you@onyx]$ javac -cp .:/usr/share/java/junit.jar ./test/nfa/NFATest.java
+
+To run test.nfa.NFATest on onyx type in one single line:
+
+    [you@onyx]$ java -cp .:/usr/share/java/junit.jar:/usr/share/java/hamcrest/core.jar org.junit.runner.JUnitCore test.nfa.NFATest 
 
 ## Sources used
 
-If you used any sources outside of the lecture notes, class lab files,
-or text book you need to list them here. If you looked something up on
-stackoverflow.com and fail to cite it in this section it will be
-considered plagiarism and be dealt with accordingly. So be safe CITE!
+N/A
 
 ----------
-This README template is using Markdown. To preview your README output,
-you can copy your file contents to a Markdown editor/previewer such
-as [https://stackedit.io/editor](https://stackedit.io/editor).
