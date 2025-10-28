@@ -24,7 +24,7 @@ To compile test.nfa.NFATest on onyx from the top directory of these files:
 
 To run test.nfa.NFATest on onyx type in one single line:
 
-    [you@onyx]$ java -cp .:/usr/share/java/junit.jar:/usr/share/java/hamcrest/core.jar org.junit.runner.JUnitCore test.nfa.NFATest 
+    [you@onyx]$ java -cp .:/usr/share/java/junit.jar:/usr/share/java/hamcrest/hamcrest.jar org.junit.runner.JUnitCore test.dfa.DFATest
 
 ## Sources used
 

@@ -297,4 +297,49 @@ public class NFATest {
 		System.out.println("nfa1 maxCopies done");
 	}
 
+	@Test
+  public void test_cycle_eclosure() {
+    NFA nfa = new NFA();
+    nfa.addSigma('a');
+    assertTrue(nfa.addState("A"));
+    assertTrue(nfa.addState("B"));
+    assertTrue(nfa.setStart("A"));
+    assertTrue(nfa.setFinal("B")); // make B final
+    // e transitions both ways A <-> B
+    assertTrue(nfa.addTransition("A", Set.of("B"), 'e'));
+    assertTrue(nfa.addTransition("B", Set.of("A"), 'e'));
+    // e-closure should include both states (and not loop forever)
+    assertEquals(nfa.eClosure(nfa.getState("A")), Set.of(nfa.getState("A"), nfa.getState("B")));
+    assertEquals(nfa.eClosure(nfa.getState("B")), Set.of(nfa.getState("A"), nfa.getState("B")));
+  }
+  
+  
+  @Test
+  public void test_multiple_setStart_calls() {
+    NFA nfa = new NFA();
+    nfa.addSigma('0');
+    assertTrue(nfa.addState("s1"));
+    assertTrue(nfa.addState("s2"));
+    assertTrue(nfa.setStart("s1"));
+    assertTrue(nfa.setStart("s2"));
+    // Only s2 should be the start if setStart replaces previous start
+    assertFalse(nfa.isStart("s1"));
+    assertTrue(nfa.isStart("s2"));
+  }
+  
+  @Test
+  public void test_unreachable_state_ignored() {
+    NFA nfa = new NFA();
+    nfa.addSigma('1');
+    assertTrue(nfa.addState("start"));
+    assertTrue(nfa.setStart("start"));
+    assertTrue(nfa.addState("final"));
+    assertTrue(nfa.setFinal("final"));
+    assertTrue(nfa.addTransition("start", Set.of("final"), '1'));
+    // add an unreachable state
+    assertTrue(nfa.addState("dead"));
+    // acceptance unaffected
+    assertTrue(nfa.accepts("1"));
+    assertFalse(nfa.accepts("0")); // symbol not in sigma should be rejected
+  }
 }
